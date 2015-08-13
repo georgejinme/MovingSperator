@@ -9,25 +9,9 @@
 import Foundation
 import UIKit
 
-enum MovingSeperatorPosition{
-    case leftSeperator
-    case rightSeperator
-    case bothSeperator
-    case none
-}
-
-enum MovingSeperatorDirection{
-    case leftToRight
-    case rightToLeft
-    case none
-}
-
-
 class MovingSeperatorTable: UIView, UITableViewDelegate, UITableViewDataSource{
     var table: UITableView?
     
-    var movingPosition: MovingSeperatorPosition = MovingSeperatorPosition.none
-    var movingDirection: MovingSeperatorDirection = MovingSeperatorDirection.none
     var seperatorWidth: CGFloat = 1.0
     var seperatorColor: UIColor = UIColor.blackColor()
     var movingTime: Double = 0.2
@@ -37,7 +21,7 @@ class MovingSeperatorTable: UIView, UITableViewDelegate, UITableViewDataSource{
         table = UITableView(frame: frame, style: UITableViewStyle.Plain)
         table?.delegate = self
         table?.dataSource = self
-        //table?.separatorStyle = UITableViewCellSeparatorStyle.None
+        table?.separatorStyle = UITableViewCellSeparatorStyle.None
         table?.registerClass(MovingSeperatorCell.self, forCellReuseIdentifier: "movingCell")
         self.addSubview(table!)
     }
@@ -53,13 +37,13 @@ class MovingSeperatorTable: UIView, UITableViewDelegate, UITableViewDataSource{
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: MovingSeperatorCell = table?.dequeueReusableCellWithIdentifier("movingCell") as! MovingSeperatorCell
+        cell.selectionStyle = UITableViewCellSelectionStyle.None
         return cell
     }
 }
 
 extension MovingSeperatorTable{
     func animate(time: Int){
-        while(self.table?.visibleCells().count == 0){}
         if (time >= self.table?.visibleCells().count) {
             return
         }else{
