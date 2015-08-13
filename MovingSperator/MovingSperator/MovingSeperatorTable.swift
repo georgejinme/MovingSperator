@@ -23,22 +23,23 @@ enum MovingSeperatorDirection{
 }
 
 
-class MovingSeperatorTable: UITableView, UITableViewDelegate, UITableViewDataSource{
+class MovingSeperatorTable: UIView, UITableViewDelegate, UITableViewDataSource{
     var table: UITableView?
     
     var movingPosition: MovingSeperatorPosition = MovingSeperatorPosition.none
     var movingDirection: MovingSeperatorDirection = MovingSeperatorDirection.none
-    var seperatorWidth: CGFloat = 30.0
-    var seperatorHeight: CGFloat = 1.0
+    var seperatorWidth: CGFloat = 1.0
     var seperatorColor: UIColor = UIColor.blackColor()
+    var movingTime: Double = 0.2
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         table = UITableView(frame: frame, style: UITableViewStyle.Plain)
         table?.delegate = self
         table?.dataSource = self
-        table?.separatorStyle = UITableViewCellSeparatorStyle.None
+        //table?.separatorStyle = UITableViewCellSeparatorStyle.None
         table?.registerClass(MovingSeperatorCell.self, forCellReuseIdentifier: "movingCell")
+        self.addSubview(table!)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -52,26 +53,25 @@ class MovingSeperatorTable: UITableView, UITableViewDelegate, UITableViewDataSou
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: MovingSeperatorCell = table?.dequeueReusableCellWithIdentifier("movingCell") as! MovingSeperatorCell
-        cell.movingSeperatorColor = self.seperatorColor
-        cell.movingSeperatorHeight = self.seperatorWidth
         return cell
     }
 }
 
 extension MovingSeperatorTable{
     func animate(time: Int){
+        while(self.table?.visibleCells().count == 0){}
         if (time >= self.table?.visibleCells().count) {
             return
         }else{
             let cell = self.table?.visibleCells()[time] as! MovingSeperatorCell
-            var verticalLine = UIView(frame: CGRectMake(0, cell.frame.size.height, self.seperatorHeight, 0))
+            var verticalLine = UIView(frame: CGRectMake(0, cell.frame.origin.y, self.seperatorWidth, 0))
             verticalLine.backgroundColor = seperatorColor
             self.addSubview(verticalLine)
-            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
+            UIView.animateWithDuration(self.movingTime, delay: 0, options: UIViewAnimationOptions.CurveLinear, animations: {
                 verticalLine.frame.size.height = cell.frame.size.height
                 }, completion: {[weak self] (finish) -> Void in
-                    UIView.animateWithDuration(0.5, animations: {
-                        cell.horizenLine!.frame.size.width = self!.seperatorWidth
+                    UIView.animateWithDuration(cell.movingTime, animations: {
+                        cell.horizenLine!.frame.size.width = cell.seperatorWidth
                     }, completion: nil)
                 self!.animate(time + 1)
             })

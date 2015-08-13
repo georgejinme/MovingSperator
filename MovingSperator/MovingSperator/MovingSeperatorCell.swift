@@ -11,13 +11,15 @@ import UIKit
 
 class MovingSeperatorCell: UITableViewCell{
     var horizenLine: UIView?
-    var movingSeperatorHeight: CGFloat = 1.0
-    var movingSeperatorColor: UIColor = UIColor.blackColor()
+    var seperatorHeight: CGFloat = 1.0
+    var seperatorWidth: CGFloat = 300.0
+    var seperatorColor: UIColor = UIColor.blackColor()
+    var movingTime: Double = 0.5
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        horizenLine = UIView(frame: CGRectMake(0, self.frame.size.height + 25, 0, movingSeperatorHeight))
-        horizenLine?.backgroundColor = movingSeperatorColor
+        horizenLine = UIView(frame: CGRectMake(0, self.frame.size.height, 0, seperatorHeight))
+        horizenLine?.backgroundColor = seperatorColor
         self.addSubview(horizenLine!)
     }
     

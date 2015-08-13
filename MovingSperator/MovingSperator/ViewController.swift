@@ -9,11 +9,21 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    var seperatorTable: MovingSeperatorTable?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        seperatorTable = MovingSeperatorTable(frame: self.view.bounds)
+        self.view.addSubview(seperatorTable!)
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        seperatorTable?.animate(0)
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
